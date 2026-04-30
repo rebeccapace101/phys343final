@@ -41,11 +41,13 @@ else
     fprintf('The data is now stored in the "allData" containers.Map object, labeled by filename.\n');
 end
 
+%%
 %use damped fit to find damping coeficiant for all trials
 damped_fit=containers.Map;
-keys=allData.keys();
-for i=1:length(keys)
-    key=keys{i};
+keyss=allData.keys();
+for i=1:length(keyss)
+    key=keyss{i};
+    value=allData(key);
     damped=fittype(@(a0, a1, b1, w, c, x) a0+exp(-c.*x).*(a1.*sin(w*x)+b1.*cos(w.*x)));
     [fitlineDamped, gofDamped, outDamped]=fit(value.Var1, value.Var3, damped, "StartPoint", [-.047 .002 -.014 9.97 .5]);
     damped_fit(key)={fitlineDamped gofDamped outDamped};
@@ -54,9 +56,9 @@ end
 %extract damping coeficiant fit and error
 dampingCoefMap=containers.Map;
 errorMap=containers.Map;
-for i=1:length(keys)
-    key=keys{i};
-    value=fitTests(key);
+for i=1:length(keyss)
+    key=keyss{i};
+    value=damped_fit(key);
     fits=value{1};
     %extract confidence intervals for c
     cint=confint(fits);
@@ -67,9 +69,13 @@ for i=1:length(keys)
     errorMap(key)=(((c-neg)+(pos-c))/2)/2;
     dampingCoefMap(key)=c;
 end
-
-%find mean and standard deviation of each set of 5 in a pressure group
-
+%%
 %plot trial at atm and 100mTorr
+figure();
+trial=allData("2838D.txt");
+D2838Fit=damped_fit("2838D.txt");
+plot(D2838Fit{1}, trial.Var1, trial.Var3);
+title("Mass on a spring at at 800 Torr")
+xlabel("Time (s)")
 
 % plot presure vs damping coeficiant
