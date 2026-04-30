@@ -43,10 +43,9 @@ end
 
 %use damped fit to find damping coeficiant for all trials
 damped_fit=containers.Map;
-keyss=allData.keys();
-for i=1:length(keyss)
-    key=keyss{i};
-    value=allData(key);
+keys=allData.keys();
+for i=1:length(keys)
+    key=keys{i};
     damped=fittype(@(a0, a1, b1, w, c, x) a0+exp(-c.*x).*(a1.*sin(w*x)+b1.*cos(w.*x)));
     [fitlineDamped, gofDamped, outDamped]=fit(value.Var1, value.Var3, damped, "StartPoint", [-.047 .002 -.014 9.97 .5]);
     damped_fit(key)={fitlineDamped gofDamped outDamped};
@@ -55,9 +54,9 @@ end
 %extract damping coeficiant fit and error
 dampingCoefMap=containers.Map;
 errorMap=containers.Map;
-for i=1:length(keyss)
-    key=keyss{i};
-    value=damped_fit(key);
+for i=1:length(keys)
+    key=keys{i};
+    value=fitTests(key);
     fits=value{1};
     %extract confidence intervals for c
     cint=confint(fits);
