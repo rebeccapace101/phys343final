@@ -75,7 +75,25 @@ figure();
 trial=allData("2838D.txt");
 D2838Fit=damped_fit("2838D.txt");
 plot(D2838Fit{1}, trial.Var1, trial.Var3);
-title("Mass on a spring at at 800 Torr")
-xlabel("Time (s)")
+title("Mass on a spring at at 800 Torr");
+xlabel("Time (s)");
+ylabel("position (cm)")
+
+figure();
+trial=allData("2870D.txt");
+D2870Fit=damped_fit("2870D.txt");
+plot(D2870Fit{1}, trial.Var1, trial.Var3);
+title("Mass on a spring at at 100 mTorr");
+xlabel("Time (s)");
+ylabel("position (cm)")
 
 % plot presure vs damping coeficiant
+pressure=[802 803 803 803 802 399 398 400 401 401 96.1 96.1 96.1 96.0 96.1 .807 .806 .806 .806 .806 .404 .406 .406 .404 .405 .109 .107 .112 .109 .107];
+dampingCoef= [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0];
+error=[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0];
+for i=1:length(keyss)
+    key=keyss{i};
+    dampingCoef(i)=dampingCoefMap(key);
+    error(i)=errorMap(key);
+end
+err

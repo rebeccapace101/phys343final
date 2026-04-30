@@ -87,4 +87,20 @@ title("Mass on a spring at at 100 mTorr");
 xlabel("Time (s)");
 ylabel("position (cm)")
 
+%%
 % plot presure vs damping coeficiant
+pressure=[802 803 803 803 802 399 398 400 401 401 96.1 96.1 96.1 96.0 96.1 .807 .806 .806 .806 .806 .404 .406 .406 .404 .405 .109 .107 .112 .109 .107];
+logPressure=log10(pressure);
+dampingCoef= [0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0];
+error=[0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0];
+for i=1:length(keyss)
+    key=keyss{i};
+    fprintf(key)
+    dampingCoef(i)=dampingCoefMap(key);
+    error(i)=errorMap(key);
+end
+figure();
+errorbar(logPressure, dampingCoef, error, "o");
+title("log of pressure and damping coeficiant");
+xlabel("log pressure");
+ylabel("damping coeficiant");
